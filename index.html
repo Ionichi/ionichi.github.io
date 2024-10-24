@@ -1,31 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Feryandi | STMIK Pontianak | Tugas SOA</title>
-</head>
-<body>
-    <div class="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center relative overflow-hidden">
-        <div class="max-w-md w-full bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden">
-            <div class="p-8 flex flex-col justify-center items-center">
-                <div class="flex justify-center items-center">
-                    <img class="w-24 h-24 mb-3 rounded-full shadow-lg" src="https://avatars.githubusercontent.com/u/82156335?v=4" alt="Feryandi / Ionichi Image" />
-    
-                    <div class="p-5">
-                        <h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white flex items-center">
-                            Feryandi
-                            <img src="https://avatars.githubusercontent.com/u/176101283?s=400&u=26547e43004e4ea75e618516c1f453a1241dd9ee&v=4" alt="Logo Yorionic" class="h-6 w-auto">
-                        </h5>
-                        <span class="text-sm text-gray-500 dark:text-gray-400">NIM : 222102476 (STMIK Pontianak)</span>
-                    </div>
-                </div>
-                
-                <a href="https://github.com/ionichi" class="w-full mt-4 md:mt-6 py-3 px-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-lg shadow-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200 text-center">Contact Me 🚀</a>
-            </div>
-        </div>
-    </div>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Feryandi | STMIK Pontianak | Tugas SOA</title>
+		<!-- supabase -->
+		<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+		<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+	</head>
+	<body>
+		<div
+			class="min-h-screen bg-gradient-to-br from-gray-900 via-green-900 to-emerald-900 flex items-center justify-center relative overflow-hidden"
+		>
+			<div
+				class="max-w-md w-full bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-xl rounded-2xl shadow-xl overflow-hidden"
+			>
+				<div class="p-8 flex flex-col justify-center items-center">
+					<div class="flex justify-center items-center">
+						<img
+							class="w-24 h-24 mb-3 rounded-full shadow-lg"
+							src="https://avatars.githubusercontent.com/u/82156335?v=4"
+							alt="Feryandi / Ionichi Image"
+						/>
 
-    <script src="https://cdn.tailwindcss.com"></script>
-</body>
+						<div class="p-5">
+							<h5 class="mb-1 text-xl font-medium text-gray-900 dark:text-white flex items-center">
+								Feryandi
+								<img
+									src="https://avatars.githubusercontent.com/u/176101283?s=400&u=26547e43004e4ea75e618516c1f453a1241dd9ee&v=4"
+									alt="Logo Yorionic"
+									class="h-6 w-auto"
+								/>
+							</h5>
+							<span class="text-sm text-gray-500 dark:text-gray-400"
+								>NIM : 222102476 (STMIK Pontianak)</span
+							>
+						</div>
+					</div>
+
+					<a
+						href="https://github.com/ionichi"
+						class="w-full mt-4 md:mt-6 py-3 px-4 bg-gradient-to-r from-green-500 to-emerald-600 text-white font-bold rounded-lg shadow-lg hover:from-green-600 hover:to-emerald-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 focus:ring-offset-gray-900 transition duration-200 text-center"
+						>Contact Me 🚀</a
+					>
+				</div>
+			</div>
+
+			<table id="tableCategory"></table>
+		</div>
+
+		<script src="https://cdn.tailwindcss.com"></script>
+
+		<script>
+			const supabaseURL = process.env.DATABASE_URL;
+			const supabaseKey = process.env.DATABASE_KEY;
+
+			const supabase = createClient(supabaseURL, supabaseKey);
+
+			async function fetchData() {
+				const { data, error } = await supabase.from("categories").select("*");
+				if (error) {
+					console.error(error);
+				} else {
+					// Tampilkan data di HTML
+					const tableBody = document.getElementById("tableCategory");
+
+					data.forEach((category) => {
+						const row = document.createElement("tr");
+						const idCell = document.createElement("td");
+						const nameCell = document.createElement("td");
+						const descriptionCell = document.createElement("td");
+						const createdCell = document.createElement("td");
+						const modifiedCell = document.createElement("td");
+
+						idCell.textContent = category.id;
+						nameCell.textContent = category.name;
+						descriptionCell.textContent = category.description;
+						createdCell.textContent = new Date(category.created).toLocaleString();
+						modifiedCell.textContent = new Date(category.modified).toLocaleString();
+
+						row.appendChild(idCell);
+						row.appendChild(nameCell);
+						row.appendChild(descriptionCell);
+						row.appendChild(createdCell);
+						row.appendChild(modifiedCell);
+						tableBody.appendChild(row);
+					});
+				}
+			}
+		</script>
+	</body>
 </html>
