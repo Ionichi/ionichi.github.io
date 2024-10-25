@@ -3,7 +3,7 @@ require '../vendor/autoload.php';
 
 use Dotenv\Dotenv;
 
-$dotenv = Dotenv::createImmutable("../");
+$dotenv = Dotenv::createImmutable(__DIR__."/../");
 $dotenv->load();
 
 $host = $_ENV['DATABASE_HOST'];
