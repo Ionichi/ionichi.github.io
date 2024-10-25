@@ -1,0 +1,51 @@
+<?php
+require '../vendor/autoload.php';
+
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable("../");
+$dotenv->load();
+
+$host = $_ENV['DATABASE_HOST'];
+$user = $_ENV['DATABASE_USER'];
+$password = $_ENV['DATABASE_PASSWORD'];
+$db = $_ENV['DATABASE_NAME'];
+
+$connection = pg_connect("host=$host port=6543 dbname=$db user=$user password=$password");
+
+$result = pg_query($connection, "select * from products");
+?>
+
+<h1>Products</h1>
+<table border='1'>
+    <thead>
+        <tr>
+            <th align='center'>id</th>
+            <th align='center'>name</th>
+            <th align='center'>description</th>
+            <th align='center'>price</th>
+            <th align='center'>category_id</th>
+            <th align='center'>created</th>
+            <th align='center'>modified</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php
+            while($row=pg_fetch_assoc($result)){
+        ?>
+                <tr>
+                    <td align='center'><?=$row['id']?></td>
+                    <td align='center'><?=$row['name']?></td>
+                    <td align='center'><?=$row['description']?></td>
+                    <td align='center'><?=$row['price']?></td>
+                    <td align='center'><?=$row['category_id']?></td>
+                    <td align='center'><?=$row['created']?></td>
+                    <td align='center'><?=$row['modified']?></td>
+                </tr>
+        <?php
+            }
+        ?>
+    </tbody>
+</table>
+
+<a href="../">Beranda</a>
